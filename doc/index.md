@@ -1,0 +1,2 @@
+# Castor documentation
+
