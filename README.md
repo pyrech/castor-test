@@ -16,10 +16,10 @@ It comes with many features to make your life easier:
 * Seamless parsing of **arguments and options**, simplifying input handling
 * **Autocomplete** support for faster and error-free typing
 * A built-in list of useful functions:
-    * [`run()`](doc/03-run.md#the-run-function): Runs external processes, enabling seamless integration with external tools
-    * [`parallel()`](doc/going-further/parallel.md#the-parallel-function): Parallelizes process execution to maximize resource utilization
-    * [`watch()`](doc/going-further/watch.md): Watches files and automatically triggers actions on file modifications
-    * [`log()`](doc/going-further/log.md#the-log-function): Captures and analyzes essential information
+    * [`run()`](doc/getting-started/run.md#the-run-function): Runs external processes, enabling seamless integration with external tools
+    * [`parallel()`](doc/going-further/helpers/parallel.md#the-parallel-function): Parallelizes process execution to maximize resource utilization
+    * [`watch()`](doc/going-further/helpers/watch.md): Watches files and automatically triggers actions on file modifications
+    * [`log()`](doc/going-further/helpers/log.md#the-log-function): Captures and analyzes essential information
     * [And even more advanced functions](doc/06-reference.md)
 
 > [!NOTE]
@@ -31,7 +31,7 @@ It comes with many features to make your life easier:
 
 In Castor, tasks are set up as typical PHP functions marked with the `#[AsTask()]` attribute in a `castor.php` file.
 
-These tasks can run any PHP code but also make use of various [functions for standard operations](doc/06-reference.md) that come pre-packaged with Castor.
+These tasks can run any PHP code but also make use of various [functions for standard operations](doc/reference.md) that come pre-packaged with Castor.
 
 For example:
 
@@ -81,7 +81,7 @@ function destroy(bool $force = false)
 ```
 
 If you want to read more about usage, you can read the [basic
-usage](doc/02-basic-usage.md) documentation, or browse the [examples](examples)
+usage](doc/getting-started/basic-usage.md) documentation, or browse the [examples](examples)
 directory.
 
 ## Installation
@@ -93,10 +93,6 @@ directory.
 
 You can download the latest release of Castor as a phar file from the [releases
 page](https://github.com/jolicode/castor/releases).
-
-You can also download the latest version by browsing [the build
-page](https://github.com/jolicode/castor/actions/workflows/build-phar.yml) and
-selecting the last build.
 
 We provide different phar for Unix/Windows architectures to offer lighter phar
 files. Download the correct one and make it available in your shell:
@@ -110,19 +106,20 @@ curl "https://github.com/jolicode/castor/releases/latest/download/castor.linux-a
 ```
 
 There are other ways to install Castor, please refer to the
-[documentation](doc/01-installation.md).
+[documentation](doc/getting-started/installation.md).
 
 ## Further documentation
 
 Discover more by reading the docs:
 
-* [Installation and Autocomplete](doc/01-installation.md)
-* [Basic Usage](doc/02-basic-usage.md)
-* [Executing Processes with `run()`](doc/03-run.md)
-* [Task Arguments](doc/04-arguments.md)
-* [Using the Context](doc/05-context.md)
-* [Castor reference](doc/06-reference.md)
+* [Getting started with Castor](doc/getting-started/index.md)
+  * [Installation and Autocomplete](doc/getting-started/installation.md)
+  * [Basic Usage](doc/getting-started/basic-usage.md)
+  * [Executing Processes with `run()`](doc/getting-started/run.md)
+  * [Task Arguments](doc/getting-started/arguments.md)
+  * [Using the Context](doc/getting-started/context.md)
 * [Going further with Castor](doc/going-further/index.md)
+* [Castor reference](doc/reference.md)
 
 ## Questions and answers
 
