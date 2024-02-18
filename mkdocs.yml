@@ -1,4 +1,4 @@
-site_name: Castor documentation
+site_name: The DX oriented task runner
 site_url: https://pyrech.github.io/castor-test/
 repo_url: https://github.com/jolicode/castor
 copyright: 'Castor is licensed under <a href="https://github.com/jolicode/castor/blob/main/LICENSE">MIT license</a>'
@@ -6,16 +6,16 @@ copyright: 'Castor is licensed under <a href="https://github.com/jolicode/castor
 edit_uri: edit/main/doc/
 docs_dir: doc
 nav:
-  - Home: ../README.md
+  - Home: index.md
   - 'Getting started':
-      - 'Installation and autocomplete': '01-installation.md'
-      - 'Basic usage': '02-basic-usage.md'
-      - 'Executing processes': '03-run.md'
-      - 'Task arguments': '04-arguments.md'
-      - 'Context': '05-context.md'
-      - 'Reference': '06-reference.md'
+      - 'Installation and autocomplete': 'getting-started/installation.md'
+      - 'Basic usage': 'getting-started/basic-usage.md'
+      - 'Executing processes': 'getting-started/run.md'
+      - 'Task arguments': 'getting-started/arguments.md'
+      - Context: 'getting-started/context.md'
   - 'Going further': 'going-further/'
-  - Changelog: ../CHANGELOG.md
+  - Reference: reference.md
+  - Changelog: changelog.md
 
 theme:
   name: material

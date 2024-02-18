@@ -1,6 +1,0 @@
-baseURL: https://pyrech.github.io/castor-test/
-languageCode: en-us
-params:
-    subtitle: The Best Widgets on Earth
-title: Castor documentation
-contentDir: doc
