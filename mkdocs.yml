@@ -5,17 +5,6 @@ copyright: 'Castor is licensed under <a href="https://github.com/jolicode/castor
 
 edit_uri: edit/main/doc/
 docs_dir: doc
-nav:
-  - Home: index.md
-  - 'Getting started':
-      - 'Installation and autocomplete': 'getting-started/installation.md'
-      - 'Basic usage': 'getting-started/basic-usage.md'
-      - 'Executing processes': 'getting-started/run.md'
-      - 'Task arguments': 'getting-started/arguments.md'
-      - Context: 'getting-started/context.md'
-  - 'Going further': 'going-further/'
-  - Reference: reference.md
-  - Changelog: changelog.md
 
 theme:
   name: material
@@ -81,3 +70,7 @@ markdown_extensions:
   - pymdownx.superfences
   - toc:
       permalink: true
+
+plugins:
+  - literate-nav:
+      nav_file: nav.md

@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install mkdocs
-        run: pip install mkdocs mkdocs-material markdown-callouts
+        run: pip install mkdocs mkdocs-material markdown-callouts mkdocs-literate-nav
       - name: Checkout
         uses: actions/checkout@v4
         with:

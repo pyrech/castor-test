@@ -1,0 +1,17 @@
+- [Home](index.md)
+- Getting started
+    - [Installation and Autocomplete](getting-started/installation.md)
+    - [Basic Usage](getting-started/basic-usage.md)
+    - [Executing Processes with `run()`](getting-started/run.md)
+    - [Task Arguments](getting-started/arguments.md)
+    - [Using the Context](getting-started/context.md)
+- Going further
+    - Helpers
+        - going-further/helpers/*.md
+    - Interacting with Castor
+        - going-further/interacting-with-castor/*.md
+    - Extending Castor
+        - going-further/extending-castor/*.md
+- [Examples](examples.md)
+- [Reference](reference.md)
+- [Changelog](changelog.md)
