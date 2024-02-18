@@ -19,8 +19,8 @@ It comes with many features to make your life easier:
     * [`run()`](doc/getting-started/run.md#the-run-function): Runs external processes, enabling seamless integration with external tools
     * [`parallel()`](doc/going-further/helpers/parallel.md#the-parallel-function): Parallelizes process execution to maximize resource utilization
     * [`watch()`](doc/going-further/helpers/watch.md): Watches files and automatically triggers actions on file modifications
-    * [`log()`](doc/going-further/helpers/log.md#the-log-function): Captures and analyzes essential information
-    * [And even more advanced functions](doc/06-reference.md)
+    * [`log()`](doc/going-further/interacting-with-castor/log.md#the-log-function): Captures and analyzes essential information
+    * [And even more advanced functions](doc/reference.md)
 
 > [!NOTE]
 > Castor is still in early development, and the API is not stable yet. Even if
@@ -112,28 +112,14 @@ There are other ways to install Castor, please refer to the
 
 Discover more by reading the docs:
 
-* [Getting started with Castor](doc/getting-started/index.md)
+* [Getting started with Castor](doc/getting-started)
   * [Installation and Autocomplete](doc/getting-started/installation.md)
   * [Basic Usage](doc/getting-started/basic-usage.md)
   * [Executing Processes with `run()`](doc/getting-started/run.md)
   * [Task Arguments](doc/getting-started/arguments.md)
   * [Using the Context](doc/getting-started/context.md)
-* [Going further with Castor](doc/going-further/index.md)
+* [Going further with Castor](doc/going-further/)
 * [Castor reference](doc/reference.md)
+* [Examples](doc/examples.md)
+* [Frequently asked questions](doc/faq.md)
 
-## Questions and answers
-
-### How is Castor different from raw Symfony Console usage?
-
-Castor is a task runner, so it's primary goal is to run simple tasks to simplify
-the project development. Usually, it is used to run Docker commands, database
-migrations, cache clearing, etc.
-
-Usually, tasks are very small, like 1 or 2 lines of code. So you probably don't
-want to waste your project with ops command that are not strictly related to the
-business.
-
-### Why "Castor"?
-
-Castor means "beaver" in french. It's an animal building stuff. And this is what
-this tool does: it helps you build stuff 😁

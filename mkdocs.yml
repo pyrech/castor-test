@@ -1,4 +1,4 @@
-site_name: The DX oriented task runner
+site_name: The DX oriented task runner in PHP
 site_url: https://pyrech.github.io/castor-test/
 repo_url: https://github.com/jolicode/castor
 copyright: 'Castor is licensed under <a href="https://github.com/jolicode/castor/blob/main/LICENSE">MIT license</a>'
@@ -12,6 +12,7 @@ theme:
   favicon: assets/favicon.png
   icon:
     repo: fontawesome/brands/github
+  language: en
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -42,15 +43,15 @@ theme:
   features:
     - content.action.edit
     - content.tabs.link
-    - navigation.path
+    - navigation.footer
+    - navigation.instant
+    - navigation.instant.prefetch
     - navigation.tabs
     - navigation.top
     - navigation.tracking
-    - navigation.sections
     - search.highlight
-  #custom_dir: doc/overrides
-extra_css:
-  - style.css
+    - toc.integrate
+  custom_dir: doc/overrides
 
 extra:
   social:
@@ -72,5 +73,6 @@ markdown_extensions:
       permalink: true
 
 plugins:
+  - search
   - literate-nav:
-      nav_file: nav.md
+      nav_file: _nav.md

@@ -12,6 +12,7 @@
         - going-further/interacting-with-castor/*.md
     - Extending Castor
         - going-further/extending-castor/*.md
-- [Examples](examples.md)
 - [Reference](reference.md)
+- [Examples](examples.md)
+- [FAQ](faq.md)
 - [Changelog](changelog.md)
