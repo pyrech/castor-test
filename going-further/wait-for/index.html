@@ -1,0 +1,493 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://pyrech.github.io/castor-test/going-further/wait-for/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>Waiting for things - Castor documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#waiting-for-things" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Castor documentation" class="md-header__button md-logo" aria-label="Castor documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Castor documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Waiting for things
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jolicode/castor" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Castor documentation" class="md-nav__button md-logo" aria-label="Castor documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Castor documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jolicode/castor" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.md" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG.md" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#common-parameters" class="md-nav__link">
+    Common parameters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-handle-when-the-condition-is-met-or-when-timeout-is-reached" class="md-nav__link">
+    How to handle when the condition is met or when timeout is reached
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-wait_for-function" class="md-nav__link">
+    The wait_for() function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-wait_for_port-function" class="md-nav__link">
+    The wait_for_port() function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-wait_for_url-function" class="md-nav__link">
+    The wait_for_url() function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-wait_for_http_response-function" class="md-nav__link">
+    The wait_for_http_response() function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-wait_for_http_status-function" class="md-nav__link">
+    The wait_for_http_status() function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-wait_for_docker_container-function" class="md-nav__link">
+    The wait_for_docker_container() function
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="waiting-for-things">Waiting for things</h1>
+<p><code>wait_for</code> and <code>wait_for_*</code> functions are designed to help developers handle
+various case where waiting is necessary (e.g. waiting for a condition to be
+satisfied, for a port to be accessible, etc.).</p>
+<h3 id="common-parameters">Common parameters</h3>
+<p>The following parameters are common to most of the functions:</p>
+<ul>
+<li><code>$timeout</code> (int): Timeout duration in seconds. Default is 10 seconds.</li>
+<li><code>$quiet</code> (bool): Whether to suppress output. Default is false.</li>
+<li><code>$intervalMs</code> (int): Interval between checks in milliseconds. Default is 100.</li>
+<li><code>$message</code> (?string): Custom message to display before waiting. Default is null.</li>
+</ul>
+<h2 id="how-to-handle-when-the-condition-is-met-or-when-timeout-is-reached">How to handle when the condition is met or when timeout is reached</h2>
+<p>The <code>wait_for</code> and <code>wait_for_*</code> functions throw a <code>WaitForTimeoutException</code>
+exception when the timeout is reached. You can catch this exception and handle
+it accordingly.</p>
+<p>Example:</p>
+<pre><code class="language-php">try {
+    wait_for(...); // wait_for_port, wait_for_url, wait_for_http_status, etc.
+} catch (WaitForTimeoutException $e) {
+    // Handle timeout
+}
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="the-wait_for-function">The <code>wait_for()</code> function</h3>
+<p>The <code>wait_for()</code> method is a general-purpose waiting function. It takes a
+callback function as its first parameter, representing the condition to be met.
+The function will repeatedly call this callback until the condition is met or
+the specified timeout is reached.</p>
+<pre><code class="language-php">wait_for(
+    callback: function () {
+        // Your custom condition/callback logic here
+        return true; // Change this based on your condition
+    },
+    timeout: 10,
+    quiet: false,
+    intervalMs: 100,
+    message: 'Waiting for something to happen...',
+);
+</code></pre>
+<blockquote>
+<p>[!NOTE]
+you can also return null if you want to abort the waiting process. The
+function will throw an exception if the callback returns null.</p>
+</blockquote>
+<h3 id="the-wait_for_port-function">The <code>wait_for_port()</code> function</h3>
+<p>The <code>wait_for_port()</code> method waits for a network port to be accessible. It checks
+if a connection can be established to the specified port on a given host within
+the specified timeout. The method allows customization by providing options such
+as the host.</p>
+<p>Example:</p>
+<pre><code class="language-php">wait_for_port(
+    port: 8080,
+    host: '127.0.0.1',
+    timeout: 15,
+    quiet: false,
+    intervalMs: 500,
+    message: 'Waiting for port localhost:8080 to be accessible...',
+);
+</code></pre>
+<h3 id="the-wait_for_url-function">The <code>wait_for_url()</code> function</h3>
+<p>The <code>wait_for_url()</code> method waits for a URL to be accessible. It attempts to
+open a connection to the specified URL within the specified timeout.</p>
+<pre><code class="language-php">wait_for_url(
+    url: 'https://example.com',
+    timeout: 10,
+    quiet: false,
+    intervalMs: 200,
+    message: 'Waiting for https://example.com to be accessible...',
+);
+</code></pre>
+<h3 id="the-wait_for_http_response-function">The <code>wait_for_http_response()</code> function</h3>
+<p>The <code>wait_for_http_response()</code> function waits for a specified URL to return a
+response assessed using a user-defined <code>$responseChecker</code> callback function.
+It allows for a detailed validation of the response content.</p>
+<p>Example validating the status code and the response content:</p>
+<pre><code class="language-php">wait_for_http_response(
+    url: 'https://example.com',
+    responseChecker: function (ResponseInterface $response) {
+        return $response-&gt;getStatusCode() !== 200
+        &amp;&amp; u($response-&gt;getContent())-&gt;containsAny(['Example Domain']);
+    },
+    timeout: 2,
+);
+</code></pre>
+<h3 id="the-wait_for_http_status-function">The <code>wait_for_http_status()</code> function</h3>
+<p>The <code>wait_for_http_status()</code> function is a specialized version of 
+<code>wait_for_http_response()</code>, specifically designed to monitor a URL until it 
+returns a desired HTTP status code.</p>
+<p>Example:</p>
+<pre><code class="language-php">wait_for_http_status(
+    url: 'https://example.com/api',
+    status: 200,
+    timeout: 10,
+    quiet: false,
+    intervalMs: 300,
+    message: 'Waiting for https://example.com/api to return HTTP 200',
+);
+</code></pre>
+<h3 id="the-wait_for_docker_container-function">The <code>wait_for_docker_container()</code> function</h3>
+<p>The <code>wait_for_docker_container()</code> function waits for a Docker container to be
+ready. It checks if the container is running and if the specified port is
+accessible within the specified timeout.
+It can also wait for a specific check to be successful, by providing a
+<code>$check</code> callback function.</p>
+<p>Example:</p>
+<pre><code class="language-php">wait_for_docker_container(
+    container: 'mysql-container',
+    containerChecker: function ($containerId) {
+        return run(&quot;docker exec $containerId mysql -uroot -proot -e 'SELECT 1'&quot;, allowFailure: true)-&gt;isSuccessful();
+    },
+    portsToCheck: [3306]
+    timeout: 30,
+    quiet: false,
+    intervalMs: 100,
+    message: 'Waiting for my-container to be ready...',
+);
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+        <script src="../../search/main.js"></script>
+      
+    
+  </body>
+</html>

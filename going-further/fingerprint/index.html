@@ -1,0 +1,428 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://pyrech.github.io/castor-test/going-further/fingerprint/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>Fingerprinting and code execution when something changes - Castor documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fingerprinting-and-code-execution-when-something-changes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Castor documentation" class="md-header__button md-logo" aria-label="Castor documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Castor documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fingerprinting and code execution when something changes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jolicode/castor" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Castor documentation" class="md-nav__button md-logo" aria-label="Castor documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Castor documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jolicode/castor" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.md" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG.md" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-fingerprint-function" class="md-nav__link">
+    The fingerprint() function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-hasher-function" class="md-nav__link">
+    The hasher() function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-fingerprint_exists-and-fingerprint_save-functions" class="md-nav__link">
+    The fingerprint_exists() and fingerprint_save() functions
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="fingerprinting-and-code-execution-when-something-changes">Fingerprinting and code execution when something changes</h1>
+<p>Castor provides a <code>fingerprint</code> functionality to execute tasks only if something
+changed. To detect whether something has changed, Castor uses a fingerprint that
+can be anything like a string content, the hash of a file or a group of files
+(based on content or modification time), etc.</p>
+<h2 id="the-fingerprint-function">The <code>fingerprint()</code> function</h2>
+<p>You can use the <code>fingerprint()</code> function to conditionally execute a callback if
+the given fingerprint has changed.</p>
+<pre><code class="language-php">use Castor\Attribute\AsTask;
+use function Castor\fingerprint;
+use function Castor\run;
+
+#[AsTask(description: 'Execute a callback only if the fingerprint has changed')]
+function task_with_a_fingerprint(): void
+{
+    fingerprint(
+        callback: function () {
+            run('echo &quot;Cool, no fingerprint! Executing...&quot;');
+        },
+        fingerprint: &quot;my fingerprint&quot;,
+    );
+}
+</code></pre>
+<blockquote>
+<p>[!NOTE]
+You can use the <code>$force</code> parameter of the <code>fingerprint()</code> function to force
+the execution of the callback even if the fingerprint has not changed.</p>
+</blockquote>
+<h2 id="the-hasher-function">The <code>hasher()</code> function</h2>
+<p>Most of the time, you will want your fingerprint hash to be based on the content
+of a file, to scope it to a specific task or something else. To help you compute
+this hash, Castor provides a <code>hasher()</code> function. It returns an instance of
+<code>Castor\HasherHelper</code> with various helper methods:</p>
+<ul>
+<li><code>write()</code>: Writes a hash of a specific (string) value.</li>
+<li><code>writeFile()</code>: Writes a hash of a file content or its modification time.</li>
+<li><code>writeWithFinder()</code>: Writes a hash of a group of files obtained through
+<a href="../filesystem/#the-finder-function">Finder</a>.</li>
+<li><code>writeGlob()</code>: Writes a hash of a group of files obtained via a glob pattern.</li>
+<li><code>writeTaskName()</code>: Writes the name of the current task.</li>
+<li><code>writeTaskArgs()</code>: Writes arguments passed to the current task.</li>
+<li><code>writeTask()</code>: Writes a combination of the current task name and arguments.</li>
+<li><code>finish()</code>: Finalizes the hash operation, returning a string of the hash.</li>
+</ul>
+<p>The methods <code>writeFile()</code>, <code>writeWithFinder()</code> and <code>writeGlob()</code> accept a second
+parameter <code>$strategy</code> to specify on with criteria the hash should be based on.
+This parameter is a <code>Castor\Fingerprint\FileHashStrategy</code> enum that contains two
+values:
+- <code>Content</code> will make the hash dependent on the file's content
+- <code>MTimes</code> will make the hash depend on the file's last modification time. This
+is the default strategy.</p>
+<p>Example usage:</p>
+<pre><code class="language-php">use Castor\Attribute\AsTask;
+use Castor\Fingerprint\FileHashStrategy;
+use function Castor\fingerprint;
+use function Castor\hasher;
+
+#[AsTask(description: 'Execute a callback only if the fingerprint has changed')]
+function task_with_a_fingerprint(): void
+{
+    fingerprint(
+        callback: function () {
+            run('echo &quot;Executing the callback because my-file.json has changed.&quot;');
+        },
+        fingerprint: hasher()-&gt;writeFile('my-file.json', FileHashStrategy::Content)-&gt;finish(),
+    );
+}
+</code></pre>
+<h2 id="the-fingerprint_exists-and-fingerprint_save-functions">The <code>fingerprint_exists()</code> and <code>fingerprint_save()</code> functions</h2>
+<p>If you want more control over the fingerprint behaviour, you can use the
+<code>fingerprint_exists()</code> and <code>fingerprint_save()</code> functions to conditionally
+execute your code:</p>
+<pre><code class="language-php">use Castor\Attribute\AsTask;
+use Castor\Fingerprint\FileHashStrategy;
+use function Castor\finder;
+use function Castor\fingerprint_exists;
+use function Castor\fingerprint_save;
+use function Castor\hasher;
+
+#[AsTask(description: 'Check if the fingerprint has changed before executing some code')]
+function task_with_some_fingerprint(): void
+{
+    if (!fingerprint_exists(my_fingerprint_check())) {
+        run('echo &quot;Executing some code because fingerprint has changed.&quot;');
+        fingerprint_save(my_fingerprint_check());
+    }
+}
+
+function my_fingerprint_check(): string
+{
+    return hasher()
+        -&gt;writeWithFinder(
+            finder()
+                -&gt;in(__DIR__)
+                -&gt;name('*.json')
+                -&gt;files(),
+            FileHashStrategy::Content
+        )
+        -&gt;finish();
+}
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+        <script src="../../search/main.js"></script>
+      
+    
+  </body>
+</html>
