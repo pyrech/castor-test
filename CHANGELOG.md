@@ -2,18 +2,42 @@
 
 ## Not released yet
 
-* Add support for SSH connection without specifying a user
-* Marked SSH features as stable
-* Import and load task from remote import automatically
-* Allow to use imported class in task from remote import
-* Do not load task from `vendor` directory
+### Features
+
+* Totally rework the import feature. Castor use special `castor.composer.json`
+  file to handle imports. This fixes many bugs and issues with the previous
+* SSH
+    * Marked SSH features as stable
+    * Add `?callable $callback = null` param to `ssh_*` functions to manipulate
+    output
+    * Add support for SSH connection without specifying a user
 * Add `context()` function in expression language to enable a task
-* Better handle notification errors and exceptions
+* Add `notificationTitle` property to `Context` to set the application name for
+  notifications title
+* Add `http_download()` function to simplify the process of downloading files
+
+### Minor
+
+* Better handling of notification errors and exceptions
+* Better log output in debug mode (`-vvv`)
+* Changed the behavior of `notify` parameter in `Context` to be a nullable boolean.
+  - `null` is now the default value (only user notifications are displayed).
+  - `true` to enable notifications globally (user and Castor generated notifications)
+  - `false` to disable them globally
+* `.castor.stub.php` is now generated in same location where `castor.php` is located
+
+### Deprecations
+
 * Deprecate `Castor\GlobalHelper` class. There are no replacements. Use raw
   functions instead
 * Deprecate `AfterApplicationInitializationEvent` event. Use
-  `FunctionsResolvedEvent` instead.
-* Fix multiple remote imports of the same package with default version
+  `FunctionsResolvedEvent` instead
+* Deprecate `request()` in favor of `http_request()` for consistency with newly
+  introduced `http_*` function
+
+### Fixes
+
+* Fix root location when repacking application
 
 ## 0.15.0 (2024-04-03)
 

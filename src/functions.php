@@ -182,8 +182,9 @@ function ssh_run(
     ?bool $allowFailure = null,
     ?bool $notify = null,
     ?float $timeout = null,
+    ?callable $callback = null,
 ): Process {
-    return Container::get()->sshRunner->execute($command, $path, $host, $user, $sshOptions, $quiet, $allowFailure, $notify, $timeout);
+    return Container::get()->sshRunner->execute($command, $path, $host, $user, $sshOptions, $quiet, $allowFailure, $notify, $timeout, $callback);
 }
 
 /**
@@ -246,9 +247,9 @@ function ssh_download(
     return Container::get()->sshRunner->download($sourcePath, $destinationPath, $host, $user, $sshOptions, $quiet, $allowFailure, $notify, $timeout);
 }
 
-function notify(string $message): void
+function notify(string $message, ?string $title = null): void
 {
-    Container::get()->notifier->send($message);
+    Container::get()->notifier->send($message, $title);
 }
 
 /**
@@ -419,13 +420,29 @@ function get_cache(): CacheItemPoolInterface&CacheInterface
 }
 
 /**
- * @param array<string, mixed> $options
- *
- * @see HttpClientInterface::OPTIONS_DEFAULTS
+ * @deprecated Since castor/castor 0.16. Use Castor\http_request() instead
  */
-function request(string $method, string $url, array $options = []): ResponseInterface
+function request(...$args): ResponseInterface
 {
-    return http_client()->request($method, $url, $options);
+    trigger_deprecation('jolicode/castor', '0.16', 'The "%s()" function is deprecated, use "Castor\%s()" instead.', __FUNCTION__, 'http_request');
+
+    return http_request(...$args);
+}
+
+/**
+ * @param array<string, mixed> $options default values at {@see HttpClientInterface::OPTIONS_DEFAULTS}
+ */
+function http_request(string $method, string $url, array $options = []): ResponseInterface
+{
+    return Container::get()->httpClient->request($method, $url, $options);
+}
+
+/**
+ * @param array<string, mixed> $options default values at {@see HttpClientInterface::OPTIONS_DEFAULTS}
+ */
+function http_download(string $url, ?string $filePath = null, string $method = 'GET', array $options = [], bool $stream = true): ResponseInterface
+{
+    return Container::get()->httpDownloader->download($url, $filePath, $method, $options, $stream);
 }
 
 function http_client(): HttpClientInterface
@@ -442,7 +459,11 @@ function http_client(): HttpClientInterface
  */
 function import(string $path, ?string $file = null, ?string $version = null, ?string $vcs = null, ?array $source = null): void
 {
-    Container::get()->importer->import($path, $file, $version, $vcs, $source);
+    if (null !== $version || null !== $vcs || null !== $source) {
+        @trigger_deprecation('castor/castor', '0.16.0', 'The "version", "vcs" and "source" arguments are deprecated, use the `castor.composer.json` file instead.');
+    }
+
+    Container::get()->importer->import($path, $file);
 }
 
 function mount(string $path, ?string $namespacePrefix = null): void

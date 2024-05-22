@@ -7,10 +7,10 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class HttpRequestTest extends TaskTestCase
 {
-    // http-request
+    // http:request
     public function test(): void
     {
-        $process = $this->runTask(['http-request']);
+        $process = $this->runTask(['http:request']);
 
         if (0 !== $process->getExitCode()) {
             throw new ProcessFailedException($process);

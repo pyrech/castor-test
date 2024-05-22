@@ -1,4 +1,14 @@
 hh:mm:ss WARNING   [castor] User Deprecated: Since castor 0.15: Autoloading functions from the "/castor/" directory is deprecated. Import files by yourself with the "castor\import()" function. ["exception" => ErrorException { …}]
+
+   █████████                     █████
+  ███░░░░░███                   ░░███
+ ███     ░░░   ██████    █████  ███████    ██████  ████████
+░███          ░░░░░███  ███░░  ░░░███░    ███░░███░░███░░███
+░███           ███████ ░░█████   ░███    ░███ ░███ ░███ ░░░
+░░███     ███ ███░░███  ░░░░███  ░███ ███░███ ░███ ░███
+ ░░█████████ ░░████████ ██████   ░░█████ ░░██████  █████
+  ░░░░░░░░░   ░░░░░░░░ ░░░░░░     ░░░░░   ░░░░░░  ░░░░░
+
 castor v.X.Y.Z
 
 Usage:
@@ -15,7 +25,9 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
-  completion  Dump the shell completion script
+  completion       Dump the shell completion script
   hello
-  help        Display help for a command
-  list        List commands
+  help             Display help for a command
+  list             List commands
+ castor
+  castor:composer  [composer] Interact with built-in Composer for castor

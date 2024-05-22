@@ -5,12 +5,12 @@ namespace Castor\Tests\Generated;
 use Castor\Tests\TaskTestCase;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class ImportSamePackageDifferentVersionTest extends TaskTestCase
+class PyrechNotImportedTest extends TaskTestCase
 {
-    // no task
+    // pyrech:not-imported
     public function test(): void
     {
-        $process = $this->runTask([], '{{ base }}/tests/fixtures/broken/import-same-package-different-version', needRemote: true);
+        $process = $this->runTask(['pyrech:not-imported']);
 
         if (1 !== $process->getExitCode()) {
             throw new ProcessFailedException($process);

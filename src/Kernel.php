@@ -15,7 +15,7 @@ use Castor\Function\FunctionResolver;
 use Castor\Helper\PlatformHelper;
 use Castor\Import\Importer;
 use Castor\Import\Mount;
-use Castor\Import\Remote\PackageImporter;
+use Castor\Import\Remote\Composer;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,7 +40,7 @@ final class Kernel
         #[Autowire(lazy: true)]
         private readonly Importer $importer,
         #[Autowire(lazy: true)]
-        private readonly PackageImporter $packageImporter,
+        private readonly Composer $composer,
         private readonly FunctionResolver $functionResolver,
         private readonly FunctionLoader $functionLoader,
         private readonly ContextRegistry $contextRegistry,
@@ -49,27 +49,17 @@ final class Kernel
 
     public function boot(InputInterface $input, OutputInterface $output): void
     {
-        $this->packageImporter->requireAutoload();
-
         $this->eventDispatcher->dispatch(new BeforeBootEvent($this->application));
 
-        $this->addMount(new Mount($this->rootDir));
+        $allowRemotePackage = $this->composer->isRemoteAllowed();
 
-        $hasLoadedPackages = false;
+        $this->addMount(new Mount($this->rootDir, allowRemotePackage: $allowRemotePackage));
 
         while ($mount = array_shift($this->mounts)) {
             $currentFunctions = get_defined_functions()['user'];
             $currentClasses = get_declared_classes();
 
             $this->load($mount, $currentFunctions, $currentClasses, $input, $output);
-
-            if ($this->packageImporter->fetchPackages()) {
-                $hasLoadedPackages = true;
-            }
-        }
-
-        if (!$hasLoadedPackages) {
-            $this->packageImporter->clean();
         }
     }
 
@@ -89,8 +79,16 @@ final class Kernel
         InputInterface $input,
         OutputInterface $output
     ): void {
+        if ($mount->allowRemotePackage) {
+            $this->composer->install($mount->path);
+        }
+
+        if ($mount->path === $this->rootDir) {
+            $this->composer->requireAutoload();
+        }
+
         try {
-            $this->requireEntrypoint($mount->path);
+            $this->requireEntrypoint($mount);
         } catch (CouldNotFindEntrypointException $e) {
             if (!$mount->allowEmptyEntrypoint) {
                 throw $e;
@@ -101,7 +99,7 @@ final class Kernel
 
         // Apply mounts
         foreach ($descriptorsCollection->taskDescriptors as $taskDescriptor) {
-            if ($mount->path !== $this->rootDir) {
+            if ($mount->path !== $this->rootDir && !class_exists(\RepackedApplication::class)) {
                 $taskDescriptor->workingDirectory = $mount->path;
             }
             if ($mount->namespacePrefix) {
@@ -154,8 +152,17 @@ final class Kernel
         );
     }
 
-    private function requireEntrypoint(string $path): void
+    private function requireEntrypoint(Mount $mount): void
     {
+        $path = $mount->path;
+
+        // It's an import, via a remote package, with a file specified
+        if ($mount->file) {
+            $this->importer->importFile($mount->path . '/' . $mount->file);
+
+            return;
+        }
+
         if (file_exists($file = $path . '/castor.php')) {
             $this->importer->importFile($file);
         } elseif (file_exists($file = $path . '/.castor/castor.php')) {

@@ -2,6 +2,7 @@
 
 namespace Castor\Helper;
 
+use Castor\Import\Remote\Composer;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\Filesystem\Path;
 
@@ -9,13 +10,23 @@ use Symfony\Component\Filesystem\Path;
 #[Exclude]
 class PathHelper
 {
+    public static function getCastorVendorDir(): string
+    {
+        return class_exists(\RepackedApplication::class) ? \RepackedApplication::ROOT_DIR . '/' . Composer::VENDOR_DIR : self::getRoot() . '/' . Composer::VENDOR_DIR;
+    }
+
     public static function getRoot(): string
     {
         static $root;
 
         if (null === $root) {
             if (class_exists(\RepackedApplication::class)) {
-                return $root = Path::getDirectory(getcwd() ?: '.');
+                $cwd = getcwd();
+                if (false === $cwd) {
+                    throw new \RuntimeException('Could not determine current working directory.');
+                }
+
+                return $root = $cwd;
             }
 
             $path = getcwd() ?: '/';

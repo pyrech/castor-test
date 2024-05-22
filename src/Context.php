@@ -26,10 +26,11 @@ class Context implements \ArrayAccess
         public readonly ?float $timeout = null,
         public readonly bool $quiet = false,
         public readonly bool $allowFailure = false,
-        public readonly bool $notify = false,
+        public readonly ?bool $notify = null,
         public readonly VerbosityLevel|LegacyVerbosityLevel $verbosityLevel = VerbosityLevel::NOT_CONFIGURED,
         // Do not use this argument, it is only used internally by the application
         public readonly string $name = '',
+        public readonly string $notificationTitle = '',
     ) {
         $this->workingDirectory = $workingDirectory ?? PathHelper::getRoot();
     }
@@ -48,6 +49,7 @@ class Context implements \ArrayAccess
             'allowFailure' => $this->allowFailure,
             'notify' => $this->notify,
             'verbosityLevel' => $this->verbosityLevel,
+            'notificationTitle' => $this->notificationTitle,
         ];
     }
 
@@ -82,6 +84,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -100,6 +103,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -124,6 +128,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -141,6 +146,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -158,6 +164,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -175,6 +182,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -192,6 +200,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -209,10 +218,11 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
-    public function withNotify(bool $notify = true): self
+    public function withNotify(?bool $notify = true): self
     {
         return new self(
             $this->data,
@@ -226,6 +236,7 @@ class Context implements \ArrayAccess
             $notify,
             $this->verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -243,6 +254,7 @@ class Context implements \ArrayAccess
             $this->notify,
             $verbosityLevel,
             $this->name,
+            $this->notificationTitle,
         );
     }
 
@@ -260,6 +272,25 @@ class Context implements \ArrayAccess
             $this->notify,
             $this->verbosityLevel,
             $name,
+            $this->notificationTitle,
+        );
+    }
+
+    public function withNotificationTitle(string $notificationTitle): self
+    {
+        return new self(
+            $this->data,
+            $this->environment,
+            $this->workingDirectory,
+            $this->tty,
+            $this->pty,
+            $this->timeout,
+            $this->quiet,
+            $this->allowFailure,
+            $this->notify,
+            $this->verbosityLevel,
+            $this->name,
+            $notificationTitle,
         );
     }
 

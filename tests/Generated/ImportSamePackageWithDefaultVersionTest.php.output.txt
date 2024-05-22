@@ -1,6 +1,16 @@
  Downloading remote packages
  Remote packages imported
 
+
+   █████████                     █████
+  ███░░░░░███                   ░░███
+ ███     ░░░   ██████    █████  ███████    ██████  ████████
+░███          ░░░░░███  ███░░  ░░░███░    ███░░███░░███░░███
+░███           ███████ ░░█████   ░███    ░███ ░███ ░███ ░░░
+░░███     ███ ███░░███  ░░░░███  ░███ ███░███ ░███ ░███
+ ░░█████████ ░░████████ ██████   ░░█████ ░░██████  █████
+  ░░░░░░░░░   ░░░░░░░░ ░░░░░░     ░░░░░   ░░░░░░  ░░░░░
+
 castor v.X.Y.Z
 
 Usage:
@@ -20,5 +30,7 @@ Available commands:
   completion            Dump the shell completion script
   help                  Display help for a command
   list                  List commands
+ castor
+  castor:composer       [composer] Interact with built-in Composer for castor
  pyrech
   pyrech:hello-example  Hello from example!
