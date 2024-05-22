@@ -13,8 +13,6 @@ runs:
     - name: Build Castor static binary for Linux
       run: bin/castor castor:static:linux
       shell: bash
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ inputs.os == 'linux' }}
 
     - name: Ensure Linux binary is OK
@@ -25,8 +23,6 @@ runs:
     - name: Build Castor static binary for MacOS - amd64
       run: bin/castor castor:static:darwin-amd64
       shell: bash
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ inputs.os == 'darwin-amd64' }}
 
     - name: Ensure MacOs - amd64 binary is OK
@@ -37,8 +33,6 @@ runs:
     - name: Build Castor static binary for MacOS - arm64
       run: bin/castor castor:static:darwin-arm64
       shell: bash
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ inputs.os == 'darwin-arm64' }}
 
     - name: Ensure MacOs - arm64 binary is OK
