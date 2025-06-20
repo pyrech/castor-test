@@ -30,112 +30,57 @@ you can use the API of this class to interact with the underlying process:
 ```php
 use Castor\Attribute\AsTask;
 
+use function Castor\context;
 use function Castor\run;
 
 #[AsTask()]
 function foo(): void
 {
-    $process = run('my-script.sh');
+    $process = run('my-script.sh', context: context()->withAllowFailure());
     $process->isSuccessful(); // will return true if the process exited with code 0.
 }
 ```
 
+> [!NOTE]
+> Without the allowFailure option, Castor would throw an exception if the process
+> execution failed. See [this documentation](context.md#failure) for more
+> information about failure handling.
+
 > [!TIP]
 > Related example: [run.php](https://github.com/jolicode/castor/blob/main/examples/run.php)
-
-## Failure
-
-By default, Castor will throw an exception if the process fails. You can disable
-that by setting the `allowFailure` option to `true`:
-
-```php
-use Castor\Attribute\AsTask;
-
-use function Castor\run;
-
-#[AsTask()]
-function foo(): void
-{
-    run('a_command_that_does_not_exist', allowFailure: true);
-}
-```
-
-> [!TIP]
-> Related example: [failure.php](https://github.com/jolicode/castor/blob/main/examples/failure.php)
-
-## Working directory
-
-By default, Castor will execute the process in the same directory as
-the `castor.php` file. You can change that by setting the `workingDirectory`
-argument. It can be either a relative or an absolute path:
-
-```php
-use Castor\Attribute\AsTask;
-
-use function Castor\run;
-
-#[AsTask()]
-function foo(): void
-{
-    run('pwd', workingDirectory: '../'); // run the process in the parent directory of the castor.php file
-    run('pwd', workingDirectory: '/tmp'); // run the process in the /tmp directory
-}
-```
-
-> [!TIP]
-> Related example: [cd.php](https://github.com/jolicode/castor/blob/main/examples/cd.php)
-
-## Environment variables
-
-By default, Castor will use the same environment variables as the current
-process. You can add or override environment variables by setting
-the `environment` argument:
-
-```php
-use Castor\Attribute\AsTask;
-
-use function Castor\run;
-
-#[AsTask()]
-function foo(): void
-{
-    run('echo $FOO', environment: ['FOO' => 'bar']); // will print "bar"
-}
-```
-
-> [!TIP]
-> Related example: [env.php](https://github.com/jolicode/castor/blob/main/examples/env.php)
 
 ## Processing the output
 
 By default, Castor will forward the stdout and stderr to the current terminal.
-If you do not want to print the process output you can set the `quiet`
-option to `true`:
+If you do not want to print the process output you can use a context with the
+`quiet` option to true:
 
 ```php
 use Castor\Attribute\AsTask;
 
+use function Castor\context;
 use function Castor\run;
 
 #[AsTask()]
 function foo(): void
 {
-    run('echo "bar"', quiet: true); // will not print anything
+    run('echo "bar"', context: context()->withQuiet()); // will not print anything
 }
 ```
 
-You can also fetch the process output by using the 
+You can also fetch the process output by using the
 returned `Symfony\Component\Process\Process` object:
 
 ```php
 use Castor\Attribute\AsTask;
 
+use function Castor\context;
 use function Castor\run;
 
 #[AsTask()]
 function foo(): void
 {
-    $process = run('echo "bar"', quiet: true); // will not print anything
+    $process = run('echo "bar"', context: context()->withQuiet())); // will not print anything
     $output = $process->getOutput(); // will return "bar\n"
 }
 ```
@@ -187,28 +132,22 @@ function cs(): int
 > [!TIP]
 > Related example: [run.php](https://github.com/jolicode/castor/blob/main/examples/run.php)
 
-## Timeout
+## Interactive Process
 
-By default, Castor allow your `run()` calls to go indefinitly.
-
-If you want to tweak that you need to set the `timeout` argument.
+If you want to run an interactive process, you can transform any context into an interactive one:
 
 ```php
 use Castor\Attribute\AsTask;
 
 use function Castor\run;
+use function Castor\context;
 
 #[AsTask()]
-function foo(): void
+function vim(): void
 {
-    run('my-script.sh', timeout: 120);
+    run('vim', context: context()->toInteractive());
 }
 ```
-
-This process will have a 2 minutes timeout.
-
-> [!TIP]
-> Related example: [wait_for.php](https://github.com/jolicode/castor/blob/main/examples/wait_for.php)
 
 ## PTY & TTY
 
@@ -221,11 +160,12 @@ do that by setting the `tty` option to `true`:
 use Castor\Attribute\AsTask;
 
 use function Castor\run;
+use function Castor\context;
 
 #[AsTask()]
 function foo(): void
 {
-    run('echo "bar"', tty: true);
+    run('echo "bar"', context: context()->withTty(true));
 }
 ```
 
@@ -233,7 +173,7 @@ function foo(): void
 > When using a TTY, the output of the command is empty in the process object
 > (when using `getOutput()` or `getErrorOutput()`).
 
-You can also disable the pty by setting the `pty` option to `false`. If `pty`
+You can also disable the PTY by setting the `pty` option to `false`. If `pty`
 and `tty` are both set to `false`, the standard input will not be forwarded to
 the process:
 
@@ -241,10 +181,11 @@ the process:
 use Castor\Attribute\AsTask;
 
 use function Castor\run;
+use function Castor\context;
 
 #[AsTask()]
 function foo(): void
 {
-    run('echo "bar"', pty: false);
+    run('echo "bar"', context: context()->withPty(false));
 }
 ```

@@ -9,7 +9,12 @@ Castor provides the following built-in functions:
 - [`app`](going-further/helpers/console-and-io.md#the-app-function)
 - [`cache`](going-further/helpers/cache.md#the-cache-function)
 - [`capture`](getting-started/run.md#the-capture-function)
+- [`check`](going-further/helpers/assertion.md#the-check-function)
 - [`context`](getting-started/context.md#the-context-function)
+- [`decrypt_file_with_password`](going-further/helpers/crypto.md#the-decrypt_file_with_password-function)
+- [`decrypt_with_password`](going-further/helpers/crypto.md#the-decrypt_with_password-function)
+- [`encrypt_file_with_password`](going-further/helpers/crypto.md#the-encrypt_file_with_password-function)
+- [`encrypt_with_password`](going-further/helpers/crypto.md#the-encrypt_with_password-function)
 - [`exit_code`](getting-started/run.md#the-exit_code-function)
 - [`finder`](going-further/helpers/filesystem.md#the-finder-function)
 - [`fingerprint`](going-further/helpers/fingerprint.md#the-fingerprint-function)
@@ -20,8 +25,8 @@ Castor provides the following built-in functions:
 - [`guard_min_version`](going-further/helpers/version-check.md#the-guard_min_version-function)
 - [`hasher`](going-further/helpers/fingerprint.md#the-hasher-function)
 - [`http_client`](going-further/helpers/http-request.md#the-http_client-function)
-- [`http_download`](going-further/helpers/http-request.md#the-http-download-function)
-- [`http_request`](going-further/helpers/http-request.md#the-http-request-function)
+- [`http_download`](going-further/helpers/http-request.md#the-http_download-function)
+- [`http_request`](going-further/helpers/http-request.md#the-http_request-function)
 - [`import`](getting-started/basic-usage.md#the-import-function)
 - [`input`](going-further/helpers/console-and-io.md#the-input-function)
 - [`io`](going-further/helpers/console-and-io.md#the-io-function)
@@ -34,6 +39,7 @@ Castor provides the following built-in functions:
 - [`output`](going-further/helpers/console-and-io.md#the-output-function)
 - [`parallel`](going-further/helpers/parallel.md#the-parallel-function)
 - [`run`](getting-started/run.md#the-run-function)
+- [`run_php`](going-further/helpers/run-php.md)
 - [`ssh_download`](going-further/helpers/ssh.md#the-ssh_download-function)
 - [`ssh_run`](going-further/helpers/ssh.md#the-ssh_run-function)
 - [`ssh_upload`](going-further/helpers/ssh.md#the-ssh_upload-function)
@@ -49,6 +55,22 @@ Castor provides the following built-in functions:
 - [`with`](going-further/interacting-with-castor/advanced-context.md#the-with-function)
 - [`yaml_dump`](going-further/helpers/yaml.md)
 - [`yaml_parse`](going-further/helpers/yaml.md)
+- [`zip`](going-further/helpers/archive.md)
+- [`zip_binary`](going-further/helpers/archive.md)
+- [`zip_php`](going-further/helpers/archive.md)
+
+## Vendor helpers
+
+Some vendor helpers are also included natively in Castor:
+
+- Functions from symfony/string:
+  - [`u`](https://symfony.com/doc/current/string.html#method-reference)
+  - [`b`](https://symfony.com/doc/current/string.html#method-reference)
+  - [`s`](https://symfony.com/doc/current/string.html#method-reference)
+
+- Functions from symfony/var-dumper:
+  - [`dump`](https://symfony.com/doc/current/components/var_dumper.html#the-dump-function)
+  - [`dd`](https://symfony.com/doc/current/components/var_dumper.html#the-dump-function)
 
 ## Attributes
 
@@ -59,6 +81,18 @@ Castor provides the following attributes to register tasks, listener, etc:
 - [`AsContextGenerator`](going-further/interacting-with-castor/advanced-context.md#the-ascontextgenerator-attribute)
 - [`AsListener`](going-further/extending-castor/events.md#registering-a-listener)
 - [`AsOption`](getting-started/arguments.md#overriding-the-option-name-and-description)
+- [`AsPathArgument`](getting-started/arguments.md#path-arguments-and-options)
+- [`AsPathOption`](getting-started/arguments.md#path-arguments-and-options)
 - [`AsRawTokens`](getting-started/arguments.md#arguments-without-configuration-nor-validation)
 - [`AsSymfonyTask`](going-further/interacting-with-castor/symfony-task.md)
 - [`AsTask`](getting-started/basic-usage.md)
+
+## Environment variables
+
+Castor supports the following environment variables:
+
+- [`CASTOR_CACHE_DIR`](going-further/helpers/cache.md#cache-location-on-the-filesystem)
+- [`CASTOR_CONTEXT`](getting-started/context.md#setting-a-default-context)
+- [`CASTOR_GENERATE_STUBS`](installation.md#stubs)
+- [`CASTOR_NO_REMOTE`](going-further/extending-castor/remote-imports.md#preventing-remote-imports)
+- [`CASTOR_USE_SECTION`](going-further/helpers/console-and-io.md#experimental-section-output)

@@ -2,6 +2,194 @@
 
 ## Not released yet
 
+## 0.25.0 (2025-06-13)
+
+### Features
+
+* Allows repack without Castor logo e.g. `castor repack --no-logo`
+* Add static build for the Linux arm64 architecture
+
+### Fixes
+
+* Fix context parsing, especially when using a task alias
+* Do not load user files when displaying version
+* Add a workaround to fix a bug in PHP 8.4, proxy object, and repacked application
+
+### Internal
+
+* Update all PHP vendor
+* Fix some CI issues (use github tokens)
+
+## 0.24.0 (2025-04-25)
+
+### Features
+
+* Improve `decrypt_file_with_password()` with smart `.enc` extension handling
+  and file overwrite protection
+* Add `zip()`, `zip_binary()`, and `zip_php()` functions to create password-protected
+  zip archives with various compression methods and configurable compression levels
+
+### Fixes
+
+* Add proper `.enc` extension to files encrypted with `encrypt_file_with_password()`
+
+### Internal
+
+* Add tests for `decrypt_file_with_password()` and `encrypt_file_with_password()`
+
+## 0.23.0 (2025-03-06)
+
+### Features
+
+* Add `$force` parameter to the `cache()` function to force recomputing the value
+* Add `getAttributes()` method to `TaskCommand` to get all or specific attributes
+* Add `CASTOR_MEMORY_LIMIT` environment variable to set the memory limit when
+  using the `run_php()` function
+* Add support for static binaries when installing castor with the installer
+
+### Fixes
+
+* Ignore `null` env variable when running process
+* Use an env var when using `run_php()` to avoid conflict with php script reexecution
+* Rename `run_phar()` to `run_php()` to express better that it can run any PHP file
+
+### Internal
+
+* Update all PHP vendor
+* Use Symfony 7.x
+* Drop support for PHP 8.1
+
+## 0.22.1 (2025-01-31)
+
+### Fixes
+
+* Fix context name when getting it from the registry
+* Fix `--context` option ignored when another option presence
+
+## 0.22.0 (2024-12-30)
+
+### Features
+
+* Add `encrypt_with_password()`, `decrypt_with_password()`,
+  `encrypt_file_with_password()`, and `decrypt_file_with_password()` functions to
+  encrypt and decrypt data
+* Add `AsPathArgument` and `AsPathOption` attributes to handle autocompletion of
+paths in arguments and options
+
+### Fixes
+
+* Add more missing vendor classes into stubs
+* Add support for disabling stubs generation (with `CASTOR_GENERATE_STUBS=0`
+  environment variable)
+
+### Documentation
+
+* Document all the environment variables supported by Castor
+
+## 0.21.0 (2024-11-19)
+
+### Features
+
+* Better rendering of run errors
+* Add `check()` function to ensure requirements are met
+* Add `ProblemException` to handle problems in a more structured way
+* Add official support for symfony/string and symfony/var-dumper functions
+
+### Internal
+
+* Rework the releasing
+
+## 0.20.0 (2024-11-13)
+
+### Features
+
+* Add support for PHP 8.4
+* Force fetching the last version when guard min is used to display more information for user
+* Add the ability to set a default task when calling `castor` without any arguments
+
+### Fixes
+
+* Boot the kernel even when using composer command
+
+### Vendor
+
+* Update all PHP vendor
+
+## 0.19.1 (2024-11-04)
+
+### Fixes
+
+* Add GetRawTokenTrait definition in stubs
+* Fix stubs to better support templates phpdoc and clean stubs file
+* Fix deprecations when using ssh functions
+
+## 0.19.0 (2024-10-29)
+
+### Features
+
+* Add `Context::withVerboseArguments()` method to pass verbose arguments to the underlying process when needed
+* Add support for custom php.ini in compile command
+* Do not validate commande options/args as soon as `#[AsRawTokens] is used
+* Update all PHP vendor
+* Add partial support for PHP 8.4 (`ssh_()` functions are not supported yet)
+
+### Fixes
+
+* Re-active `static-darwin-arm64` binary build
+* Fix stubs generation to use fully qualified class names even in phpdoc
+
+### Vendor
+
+* Update SPC version to v2.3.5
+
+## 0.18.2 (2024-09-03)
+
+* Do not build static-darwin-arm64 binary anymore (may be temporary)
+
+## 0.18.1 (2024-09-03)
+
+* Fix BC layer for `fingerprint()` function
+* Fix repack command work without .castor folder
+
+## 0.18.0 (2024-08-27)
+
+### Features
+
+* Add `Castor\CommandBuilder\CommandBuilderInterface` which allows to build nice API for command line software
+* Add `Context::toInteractive()` method
+* Add `Castor\Event\ContextCreatedEvent` to allow updating the context after it is created
+* Add `run_phar()` function to run a phar file in all contexts
+
+### Vendor
+
+* Update SPC version to 2.3.0
+* Update all PHP vendor
+
+### Fixes
+
+* Add an id parameter to `fingerprint()` to avoid bad cache hit
+* Fix completion when update is available
+* Fix repack when there is composer dependencies to castor
+* Fix wait_for_docker_container example to avoid checking previous docker logs
+
+### Deprecations
+
+* Deprecate all arguments in `run()` function that are already in the context.
+    Examples:
+    ```diff
+    {
+    -    run(['composer', 'install'], workingDirectory: __DIR__);
+    +    run(['composer', 'install'], context: context()->withWorkingDirectory(__DIR__));
+    }
+    ```
+* Deprecate `suggestedValues` property in `AsArgument` and `AsOption` attributes. Use `autocomplete` property instead.
+
+## 0.17.1 (2024-05-31)
+
+### Fixes
+
+* Fix update instruction
+
 ## 0.17.0 (2024-05-27)
 
 ### Features

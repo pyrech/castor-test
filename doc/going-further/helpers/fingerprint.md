@@ -22,6 +22,7 @@ function task_with_a_fingerprint(): void
         callback: function () {
             io()->writeln('Cool, no fingerprint! Executing...');
         },
+        id: 'my-fingerprint',
         fingerprint: "my fingerprint",
     );
 }
@@ -30,6 +31,10 @@ function task_with_a_fingerprint(): void
 > [!NOTE]
 > You can use the `$force` parameter of the `fingerprint()` function to force
 > the execution of the callback even if the fingerprint has not changed.
+
+> [!NOTE]
+> By default the fingerprint is scoped to the current project, but you can use
+> the `$global` parameter to make it shared across all projects.
 
 ## The `hasher()` function
 
@@ -72,6 +77,7 @@ function task_with_a_fingerprint(): void
         callback: function () {
             io()->writeln('Executing the callback because my-file.json has changed.');
         },
+        id: 'task-id',
         fingerprint: hasher()->writeFile('my-file.json', FileHashStrategy::Content)->finish(),
     );
 }
@@ -94,9 +100,9 @@ use function Castor\hasher;
 #[AsTask(description: 'Check if the fingerprint has changed before executing some code')]
 function task_with_some_fingerprint(): void
 {
-    if (!fingerprint_exists(my_fingerprint_check())) {
+    if (!fingerprint_exists('task-id', my_fingerprint_check())) {
         io()->writeln('Executing some code because fingerprint has changed.');
-        fingerprint_save(my_fingerprint_check());
+        fingerprint_save('task-id', my_fingerprint_check());
     }
 }
 
