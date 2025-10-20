@@ -37,5 +37,5 @@ function darwinArm64()
 function windowsAmd64()
 {
     // No posix nor pcntl extensions on Windows
-    run('php bin/castor compile tools/phar/build/castor.windows-amd64.phar --os=windows --arch=x86_64 --binary-path=castor.windows-amd64.exe --php-extensions=mbstring,phar,tokenizer,curl,filter,openssl,sodium,ctype,zip,bz2,iconv', context: context()->withTimeout(0));
+    run('bin/castor compile tools/phar/build/castor.windows-amd64.phar --os=windows --arch=x86_64 --binary-path=castor.windows-amd64.exe --php-extensions=mbstring,phar,tokenizer,filter', context: context()->withTimeout(0));
 }

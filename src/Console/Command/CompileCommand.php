@@ -62,15 +62,11 @@ class CompileCommand extends Command
         $os = $input->getOption('os');
         $arch = $input->getOption('arch');
 
-        if ('windows' === $os) {
-            $spcBinaryPath .= '.exe';
-        }
-
         $this->setupSPC(
             $spcBinaryDir,
             $spcBinaryPath,
             $io,
-            $os,
+            'windows' === $os ? 'linux' : $os,
             $arch,
             $input->getOption('spc-version'),
         );
@@ -137,17 +133,13 @@ class CompileCommand extends Command
         $input->setArgument('phar-path', Path::makeAbsolute($input->getArgument('phar-path'), getcwd() ?: PathHelper::getRoot()));
     }
 
-    private function downloadSPC(string $spcSourceUrl, string $spcBinaryDestination, bool $unarchive, SymfonyStyle $io): void
+    private function downloadSPC(string $spcSourceUrl, string $spcBinaryDestination, SymfonyStyle $io): void
     {
         $response = $this->httpClient->request('GET', $spcSourceUrl);
         $contentLength = $response->getHeaders()['content-length'][0] ?? 0;
 
-        if ($unarchive) {
-            $spcTarGzDestination = $spcBinaryDestination . '.tar.gz';
-            $outputStream = fopen($spcTarGzDestination, 'w');
-        } else {
-            $outputStream = fopen($spcBinaryDestination, 'w');
-        }
+        $spcTarGzDestination = $spcBinaryDestination . '.tar.gz';
+        $outputStream = fopen($spcTarGzDestination, 'w');
 
         $progressBar = $io->createProgressBar((int) $contentLength);
 
@@ -162,16 +154,14 @@ class CompileCommand extends Command
 
         fclose($outputStream);
 
-        if ($unarchive) {
-            $extractProcess = new Process(
-                command: ['tar', 'xf', $spcTarGzDestination],
-                cwd: \dirname($spcBinaryDestination),
-                timeout: null,
-            );
+        $extractProcess = new Process(
+            command: ['tar', 'xf', $spcTarGzDestination],
+            cwd: \dirname($spcBinaryDestination),
+            timeout: null,
+        );
 
-            $io->text('Running command: ' . $extractProcess->getCommandLine());
-            $extractProcess->mustRun(fn ($type, $buffer) => print $buffer);
-        }
+        $io->text('Running command: ' . $extractProcess->getCommandLine());
+        $extractProcess->mustRun(fn ($type, $buffer) => print $buffer);
 
         chmod($spcBinaryDestination, 0o755);
 
@@ -220,10 +210,21 @@ class CompileCommand extends Command
         $buildProcess = new Process(
             command: $command,
             cwd: $spcBinaryDir,
-            env: ('linux' === $os) ? [
-                'OPENSSL_LIBS' => '-l:libssl.a -l:libcrypto.a -ldl -lpthread',
-                'OPENSSL_CFLAGS' => \sprintf('-I%s/source/openssl/include', $spcBinaryDir),
-            ] : [],
+            env: match($os) {
+                'linux' => [
+                    'OPENSSL_LIBS' => '-l:libssl.a -l:libcrypto.a -ldl -lpthread',
+                    'OPENSSL_CFLAGS' => \sprintf('-I%s/source/openssl/include', $spcBinaryDir),
+                ],
+                'windows' => [
+                    'CC' => 'x86_64-w64-mingw32-gcc',
+                    'CXX' => 'x86_64-w64-mingw32-g++',
+                    'CHOST' => 'x86_64-w64-mingw32',
+                    'HOST' => 'x86_64-w64-mingw32',
+                    'HOST_PHP' => 'x86_64-w64-mingw32',
+                    'BUILD' => 'x86_64-linux-gnu',
+                ],
+                default => [],
+            },
             timeout: null,
         );
         $io->text('Running command: ' . $buildProcess->getCommandLine());
@@ -263,21 +264,12 @@ class CompileCommand extends Command
     {
         $this->fs->mkdir($spcBinaryDir, 0o755);
 
-        $extension = 'tar.gz';
-        $unarchive = true;
-
-        if ($os === 'windows') {
-            $arch = 'x64';
-            $extension = 'exe';
-            $unarchive = false;
-        }
-
         if ($this->fs->exists($spcBinaryPath)) {
             $io->text(\sprintf('Using the static-php-cli (spc) tool from "%s"', $spcBinaryPath));
         } else {
-            $spcSourceUrl = \sprintf('https://github.com/crazywhalecc/static-php-cli/releases/download/%s/spc-%s-%s.%s', $spcVersion, $os, $arch, $extension);
+            $spcSourceUrl = \sprintf('https://github.com/crazywhalecc/static-php-cli/releases/download/%s/spc-%s-%s.tar.gz', $spcVersion, $os, $arch);
             $io->text(\sprintf('Downloading the static-php-cli (spc) tool from "%s" to "%s"', $spcSourceUrl, $spcBinaryPath));
-            $this->downloadSPC($spcSourceUrl, $spcBinaryPath, $unarchive, $io);
+            $this->downloadSPC($spcSourceUrl, $spcBinaryPath, $io);
             $io->newLine(2);
         }
     }

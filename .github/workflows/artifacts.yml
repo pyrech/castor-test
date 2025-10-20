@@ -22,33 +22,33 @@ jobs:
 
       - uses: ./.github/actions/phar
 
-      - name: Upload the Linux phar (linux-amd64)
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.linux-amd64.phar'
-          path: tools/phar/build/castor.linux-amd64.phar
-          if-no-files-found: error
-
-      - name: Upload the Linux phar (linux-arm64)
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.linux-arm64.phar'
-          path: tools/phar/build/castor.linux-arm64.phar
-          if-no-files-found: error
-
-      - name: Upload the Darwin phar (darwin-amd64)
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.darwin-amd64.phar'
-          path: tools/phar/build/castor.darwin-amd64.phar
-          if-no-files-found: error
-
-      - name: Upload the Darwin phar (darwin-arm64)
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.darwin-arm64.phar'
-          path: tools/phar/build/castor.darwin-arm64.phar
-          if-no-files-found: error
+      #- name: Upload the Linux phar (linux-amd64)
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: 'castor.linux-amd64.phar'
+      #    path: tools/phar/build/castor.linux-amd64.phar
+      #    if-no-files-found: error
+#
+      #- name: Upload the Linux phar (linux-arm64)
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: 'castor.linux-arm64.phar'
+      #    path: tools/phar/build/castor.linux-arm64.phar
+      #    if-no-files-found: error
+#
+      #- name: Upload the Darwin phar (darwin-amd64)
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: 'castor.darwin-amd64.phar'
+      #    path: tools/phar/build/castor.darwin-amd64.phar
+      #    if-no-files-found: error
+#
+      #- name: Upload the Darwin phar (darwin-arm64)
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: 'castor.darwin-arm64.phar'
+      #    path: tools/phar/build/castor.darwin-arm64.phar
+      #    if-no-files-found: error
 
       - name: Upload the Windows phar (windows-amd64)
         uses: actions/upload-artifact@v4
@@ -57,9 +57,141 @@ jobs:
           path: tools/phar/build/castor.windows-amd64.phar
           if-no-files-found: error
 
-  static-linux-amd64:
+#  static-linux-amd64:
+#    needs: phars
+#    name: Create Linux amd64 static binary and upload
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - uses: ./.github/actions/install
+#
+#      - uses: ./.github/actions/cache
+#        with:
+#          target: 'linux-amd64'
+#
+#      - name: retrieve phar artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          path: tools/phar/build
+#          merge-multiple: true
+#
+#      - uses: ./.github/actions/static
+#        with:
+#          os: 'linux-amd64'
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Upload the Linux amd64 static binary
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: 'castor.linux-amd64'
+#          path: ./castor.linux-amd64
+#          if-no-files-found: error
+#
+#  static-linux-arm64:
+#    needs: phars
+#    name: Create Linux arm64 static binary and upload
+#    runs-on: ubuntu-24.04-arm
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - uses: ./.github/actions/install
+#
+#      - uses: ./.github/actions/cache
+#        with:
+#          target: 'linux-arm64'
+#
+#      - name: retrieve phar artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          path: tools/phar/build
+#          merge-multiple: true
+#
+#      - uses: ./.github/actions/static
+#        with:
+#          os: 'linux-arm64'
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Upload the Linux arm64 static binary
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: 'castor.linux-arm64'
+#          path: ./castor.linux-arm64
+#          if-no-files-found: error
+#
+#  static-darwin-amd64:
+#    needs: phars
+#    name: Create MacOs amd64 static binary and upload
+#    runs-on: macos-15-intel
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - uses: ./.github/actions/install
+#
+#      - uses: ./.github/actions/cache
+#        with:
+#          target: 'darwin-amd64'
+#
+#      - name: retrieve phar artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          path: tools/phar/build
+#          merge-multiple: true
+#
+#      - uses: ./.github/actions/static
+#        with:
+#          os: 'darwin-amd64'
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Upload the MacOs amd64 static binary
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: 'castor.darwin-amd64'
+#          path: ./castor.darwin-amd64
+#          if-no-files-found: error
+#
+#  static-darwin-arm64:
+#    needs: phars
+#    name: Create MacOs arm64 static binary and upload
+#    runs-on: macos-15
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - uses: ./.github/actions/install
+#
+#      - uses: ./.github/actions/cache
+#        with:
+#          target: 'darwin-arm64'
+#
+#      - name: retrieve phar artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          path: tools/phar/build
+#          merge-multiple: true
+#
+#      - uses: ./.github/actions/static
+#        with:
+#          os: 'darwin-arm64'
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Upload the MacOs arm64 static binary
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: 'castor.darwin-arm64'
+#          path: ./castor.darwin-arm64
+#          if-no-files-found: error
+
+  static-windows-amd64-build:
     needs: phars
-    name: Create Linux amd64 static binary and upload
+    name: Create Windows amd64 static binary and upload
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -69,7 +201,7 @@ jobs:
 
       - uses: ./.github/actions/cache
         with:
-          target: 'linux-amd64'
+          target: 'windows-amd64'
 
       - name: retrieve phar artifacts
         uses: actions/download-artifact@v4
@@ -77,142 +209,8 @@ jobs:
           path: tools/phar/build
           merge-multiple: true
 
-      - uses: ./.github/actions/static
-        with:
-          os: 'linux-amd64'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload the Linux amd64 static binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.linux-amd64'
-          path: ./castor.linux-amd64
-          if-no-files-found: error
-
-  static-linux-arm64:
-    needs: phars
-    name: Create Linux arm64 static binary and upload
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: ./.github/actions/install
-
-      - uses: ./.github/actions/cache
-        with:
-          target: 'linux-arm64'
-
-      - name: retrieve phar artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: tools/phar/build
-          merge-multiple: true
-
-      - uses: ./.github/actions/static
-        with:
-          os: 'linux-arm64'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload the Linux arm64 static binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.linux-arm64'
-          path: ./castor.linux-arm64
-          if-no-files-found: error
-
-  static-darwin-amd64:
-    needs: phars
-    name: Create MacOs amd64 static binary and upload
-    runs-on: macos-15-intel
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: ./.github/actions/install
-
-      - uses: ./.github/actions/cache
-        with:
-          target: 'darwin-amd64'
-
-      - name: retrieve phar artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: tools/phar/build
-          merge-multiple: true
-
-      - uses: ./.github/actions/static
-        with:
-          os: 'darwin-amd64'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload the MacOs amd64 static binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.darwin-amd64'
-          path: ./castor.darwin-amd64
-          if-no-files-found: error
-
-  static-darwin-arm64:
-    needs: phars
-    name: Create MacOs arm64 static binary and upload
-    runs-on: macos-15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: ./.github/actions/install
-
-      - uses: ./.github/actions/cache
-        with:
-          target: 'darwin-arm64'
-
-      - name: retrieve phar artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: tools/phar/build
-          merge-multiple: true
-
-      - uses: ./.github/actions/static
-        with:
-          os: 'darwin-arm64'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload the MacOs arm64 static binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'castor.darwin-arm64'
-          path: ./castor.darwin-arm64
-          if-no-files-found: error
-
-  static-windows-amd64:
-    needs: phars
-    name: Create Windows amd64 static binary and upload
-    runs-on: windows-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: ./.github/actions/install
-
-      - uses: ./.github/actions/cache
-        with:
-          os: 'windows'
-
-      - name: retrieve phar artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: tools/phar/build
-          merge-multiple: true
-
-      - name: Setup VS Build Environment
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
+      - name: Install MinGW-w64 Cross-Compiler
+        run: sudo apt-get update && sudo apt-get install -y gcc-mingw-w64
 
       - uses: ./.github/actions/static
         with:
@@ -226,3 +224,21 @@ jobs:
           name: 'castor.windows-amd64.exe'
           path: ./castor.windows-amd64.exe
           if-no-files-found: error
+
+  static-windows-amd64-verify-upload:
+    needs: static-windows-amd64-build
+    name: Verify Windows amd64 static binary
+    runs-on: windows-latest
+    steps:
+      - name: retrieve binary artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./castor.windows-amd64.exe
+          merge-multiple: true
+
+      - name: Ensure Windows - amd64 binary is OK
+        run: |
+          set -e
+          ./castor.windows-amd64.exe --version
+          ./castor.windows-amd64.exe debug
+        shell: cmd

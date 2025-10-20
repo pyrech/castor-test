@@ -85,6 +85,13 @@ runs:
         key: php-static-${{ env.cache_key_darwin_arm64}}
       if: ${{ inputs.target == 'darwin-arm64' }}
 
+    - name: Restore PHP static building artifacts cache for windows-amd64
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.cache_dirname_windows_amd64 }}
+        key: php-static-${{ env.cache_key_windows_amd64 }}
+      if: ${{ inputs.os == 'windows-amd64' }}
+
     - name: Restore PHP static building artifacts cache for test job
       uses: actions/cache@v4
       with:
