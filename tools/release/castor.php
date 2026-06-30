@@ -16,7 +16,7 @@ use function Castor\fs;
 use function Castor\io;
 use function Castor\run;
 
-const REPO = 'jolicode/castor';
+const REPO = 'pyrech/castor-test';
 const EXPECTED_ARTIFACTS = 9;
 
 #[AsTask(description: 'Release a new version of castor', aliases: ['release'])]
@@ -126,6 +126,7 @@ function release(): int
         [
             'gh', 'release', 'create', $version,
             '--title', "Release {$version}",
+            '--generate-notes',
             ...array_keys(iterator_to_array($files)),
         ],
         context: context()->toInteractive()
