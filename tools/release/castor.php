@@ -126,10 +126,13 @@ function release(): int
         [
             'gh', 'release', 'create', $version,
             '--title', "Release {$version}",
-            '--generate-notes',
             ...array_keys(iterator_to_array($files)),
         ],
-        context: context()->toInteractive()
+        // NO_COLOR disables gh's terminal probing (OSC 11 background color and
+        // cursor position queries). Their responses can be misread as keystrokes
+        // by gh's interactive prompt on some terminals, breaking the release with
+        // "could not prompt: unexpected escape sequence from terminal".
+        context: context()->withEnvironment(['NO_COLOR' => '1'])->toInteractive()
     );
 
     if (!$process->isSuccessful()) {
