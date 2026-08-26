@@ -2,7 +2,7 @@ name: Artifacts
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, snapshot-test ]
 
 permissions:
   contents: write # zizmor: ignore[excessive-permissions]
@@ -230,7 +230,7 @@ jobs:
           if-no-files-found: error
 
   snapshot:
-    needs: [phars, static-linux-amd64, static-linux-arm64, static-darwin-amd64, static-darwin-arm64]
+    needs: [phars]
     name: Publish the snapshot pre-release
     runs-on: ubuntu-latest
     steps:
