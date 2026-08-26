@@ -1,7 +1,8 @@
 <?php
 
-// Fake "latest release" payload used by SelfUpdateCommandTest: every asset
-// points to the same binary, served by binary.php
+// Fake GitHub releases API used by SelfUpdateCommandTest: "/latest" is the
+// latest release, "/tags/snapshot" the snapshot pre-release. Every asset points
+// to the same binary, served by binary.php
 
 $binaryUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/self-update/binary.php';
 
@@ -12,5 +13,9 @@ foreach (['linux-amd64', 'linux-arm64', 'darwin-amd64', 'darwin-arm64'] as $plat
 }
 $assets[] = ['name' => 'castor.windows-amd64.phar', 'browser_download_url' => $binaryUrl];
 
+$release = '/tags/snapshot' === ($_SERVER['PATH_INFO'] ?? '/latest')
+    ? ['tag_name' => 'snapshot', 'name' => 'v99.0.0-3-gabcdef0']
+    : ['tag_name' => 'v99.0.0', 'name' => 'v99.0.0'];
+
 header('Content-Type: application/json');
-echo json_encode(['tag_name' => 'v99.0.0', 'assets' => $assets]);
+echo json_encode($release + ['assets' => $assets]);

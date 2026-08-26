@@ -13,6 +13,11 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /** @internal */
 final readonly class ReleaseHelper
 {
+    /** The rolling pre-release of the main branch, see the Artifacts workflow */
+    public const string SNAPSHOT_TAG = 'snapshot';
+
+    private const string API_URL = 'https://api.github.com/repos/jolicode/castor/releases';
+
     public function __construct(
         private CacheItemPoolInterface&CacheInterface $cache,
         private HttpClientInterface $httpClient,
@@ -30,32 +35,18 @@ final readonly class ReleaseHelper
      */
     public function getLatest(bool $useCache = true, float $timeout = 1): ?array
     {
-        $item = $this->cache->getItem('castor-releases');
+        return $this->fetch('/latest', 'castor-releases', $useCache, $timeout);
+    }
 
-        if ($item->isHit() && $useCache) {
-            return $item->get();
-        }
-
-        $latestVersion = null;
-        $item->expiresAfter(60 * 60 * 24);
-
-        try {
-            $latestVersion = $this
-                ->httpClient
-                ->request('GET', PlatformHelper::getEnv('CASTOR_RELEASES_URL') ?: 'https://api.github.com/repos/jolicode/castor/releases/latest', [
-                    'timeout' => $timeout,
-                ])
-                ->toArray()
-            ;
-        } catch (ExceptionInterface) {
-            $this->logger->info('Failed to fetch latest Castor version from GitHub.');
-
-            $item->expiresAfter(60 * 10);
-        }
-
-        $this->cache->save($item->set($latestVersion));
-
-        return $latestVersion;
+    /**
+     * Returns the GitHub release payload of the given tag, or null if it could
+     * not be fetched. Same caching as getLatest().
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getRelease(string $tag, bool $useCache = true, float $timeout = 1): ?array
+    {
+        return $this->fetch('/tags/' . $tag, 'castor-release-' . $tag, $useCache, $timeout);
     }
 
     /**
@@ -85,5 +76,39 @@ final readonly class ReleaseHelper
         }
 
         return array_first($assets)['browser_download_url'] ?? null;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function fetch(string $path, string $cacheKey, bool $useCache, float $timeout): ?array
+    {
+        $item = $this->cache->getItem($cacheKey);
+
+        if ($item->isHit() && $useCache) {
+            return $item->get();
+        }
+
+        $release = null;
+        $item->expiresAfter(60 * 60 * 24);
+
+        try {
+            $release = $this
+                ->httpClient
+                // The base URL can be overridden, e.g. by the test suite
+                ->request('GET', (PlatformHelper::getEnv('CASTOR_RELEASES_URL') ?: self::API_URL) . $path, [
+                    'timeout' => $timeout,
+                ])
+                ->toArray()
+            ;
+        } catch (ExceptionInterface) {
+            $this->logger->info(\sprintf('Failed to fetch the Castor release "%s" from GitHub.', $path));
+
+            $item->expiresAfter(60 * 10);
+        }
+
+        $this->cache->save($item->set($release));
+
+        return $release;
     }
 }

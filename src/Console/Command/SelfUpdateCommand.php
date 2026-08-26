@@ -42,6 +42,8 @@ final readonly class SelfUpdateCommand
         bool $noBackup = false,
         #[Option(description: 'Rollback to the previous version', shortcut: 'r')]
         bool $rollback = false,
+        #[Option(description: 'Update to the latest snapshot of the main branch')]
+        bool $snapshot = false,
     ): int {
         $installationMethod = $this->installation->getMethod();
         $currentPath = $this->installation->getPath();
@@ -58,7 +60,7 @@ final readonly class SelfUpdateCommand
             return $this->updateViaComposer($io);
         }
 
-        return $this->updateBinary($io, $force, $noBackup, $currentPath);
+        return $this->updateBinary($io, $force, $noBackup, $snapshot, $currentPath);
     }
 
     private function updateViaComposer(SymfonyStyle $io): int
@@ -76,13 +78,15 @@ final readonly class SelfUpdateCommand
         return Command::SUCCESS;
     }
 
-    private function updateBinary(SymfonyStyle $io, bool $force, bool $noBackup, string $currentPath): int
+    private function updateBinary(SymfonyStyle $io, bool $force, bool $noBackup, bool $snapshot, string $currentPath): int
     {
         $io->section('Checking for updates...');
 
         // Always hit GitHub here: the user explicitly asked for an update, a
         // day-old cached release would be misleading
-        $latestVersion = $this->releaseHelper->getLatest(useCache: false, timeout: 10);
+        $latestVersion = $snapshot
+            ? $this->releaseHelper->getRelease(ReleaseHelper::SNAPSHOT_TAG, useCache: false, timeout: 10)
+            : $this->releaseHelper->getLatest(useCache: false, timeout: 10);
 
         if (null === $latestVersion) {
             $io->error('Failed to fetch latest version information from GitHub.');
@@ -90,17 +94,30 @@ final readonly class SelfUpdateCommand
             return Command::FAILURE;
         }
 
-        $latestTag = $latestVersion['tag_name'];
+        // Releases are named after their tag, the snapshot pre-release after
+        // the version it was built from (e.g. v1.7.0-14-g4531440)
+        $latestTag = $snapshot ? $latestVersion['name'] : $latestVersion['tag_name'];
         $currentVersion = Application::VERSION;
 
         $io->text(\sprintf('Current version: <info>%s</info>', $currentVersion));
-        $io->text(\sprintf('Latest version:  <info>%s</info>', $latestTag));
+        $io->text(\sprintf('Latest %s: <info>%s</info>', $snapshot ? 'snapshot' : 'version', $latestTag));
         $io->newLine();
 
-        if (!$force && version_compare($latestTag, $currentVersion, '<=')) {
+        // Snapshot versions do not compare with releases: a snapshot is only
+        // up to date when it is the latest one, and a release is always "newer"
+        // than a snapshot for someone leaving the snapshots
+        $upToDate = $snapshot || Application::isSnapshot()
+            ? $latestTag === $currentVersion
+            : version_compare($latestTag, $currentVersion, '<=');
+
+        if (!$force && $upToDate) {
             $io->success('You are already using the latest version of Castor.');
 
             return Command::SUCCESS;
+        }
+
+        if (Application::isSnapshot() && !$snapshot) {
+            $io->note('You are running a snapshot: switching back to the latest release. Use --snapshot to stay on the snapshots.');
         }
 
         $downloadUrl = $this->releaseHelper->getDownloadUrl($latestVersion);
