@@ -2,7 +2,7 @@ name: Artifacts
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, fix/darwin-amd64-static-php ]
 
 # Every push on main rebuilds and republishes the snapshot: build one run at a
 # time and keep only the latest queued one. A running build is never

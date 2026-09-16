@@ -27,17 +27,17 @@ runs:
         set -e
         mkdir -p "${RUNNER_TEMP}/php"
         curl -fsSL "https://dl.static-php.dev/static-php-cli/common/php-${PHP_VERSION}-cli-macos-x86_64.tar.gz" | tar -xz -C "${RUNNER_TEMP}/php"
-        # Composer >= 2.9 uses HTTP/3 when curl supports it, and the curl
-        # bundled in the static PHP crashes on macOS with HTTP/3
-        curl -fsSL -o "${RUNNER_TEMP}/php/composer" https://getcomposer.org/download/2.8.12/composer.phar
+        curl -fsSL -o "${RUNNER_TEMP}/php/composer" https://getcomposer.org/download/latest-stable/composer.phar
         chmod +x "${RUNNER_TEMP}/php/composer"
         echo "${RUNNER_TEMP}/php" >> "$GITHUB_PATH"
         "${RUNNER_TEMP}/php/php" --version
       shell: bash
       env:
-        # The full version is required, the php-version input only gives the
-        # minor one
-        PHP_VERSION: '8.4.23'
+        # The php-version input only gives the minor version, and 8.4.10 is
+        # the last build whose curl has no HTTP/3: Composer >= 2.9 (also the
+        # one embedded in Castor) uses HTTP/3 when available, and the ngtcp2
+        # bundled in the newer builds aborts on macOS
+        PHP_VERSION: '8.4.10'
 
     - name: Setup PHP
       if: ${{ !(runner.os == 'macOS' && runner.arch == 'X64') }}
